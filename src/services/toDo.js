@@ -4,6 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Define a service using a base URL and expected endpoints
 export const toDoApi = createApi({
   reducerPath: "toDoApi",
+  tagTypes: ['Todos'],
   baseQuery: fetchBaseQuery({
     baseUrl: "https://first-node-js-app-r.herokuapp.com/api/",
   }),
@@ -19,6 +20,13 @@ export const toDoApi = createApi({
           },
         };
       },
+      providesTags: (result) =>
+          result
+              ? [
+                ...result.map(({ ID }) => ({ type: 'Todos', ID })),
+                { type: 'Todos', ID: 'LIST' },
+              ]
+              : [{ type: 'Todos', ID: 'LIST' }],
     }),
     createToDo: builder.mutation({
       query: (body) => {
@@ -35,7 +43,7 @@ export const toDoApi = createApi({
       },
       transformResponse: (response, meta, arg) => response.data,
       transformErrorResponse: (response, meta, arg) => response.status,
-      invalidatesTags: ["todos"],
+      invalidatesTags: [{type: 'Todos', ID: 'List'}],
     }),
     deleteToDo: builder.mutation({
       query: (id) => {
@@ -51,7 +59,7 @@ export const toDoApi = createApi({
       },
       transformResponse: (response, meta, arg) => response.data,
       transformErrorResponse: (response, meta, arg) => response.status,
-      invalidatesTags: ["deleteTosha"],
+      invalidatesTags: [{type: 'Todos', ID: 'List'}],
     }),
   }),
 });
