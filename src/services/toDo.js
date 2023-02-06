@@ -12,7 +12,7 @@ export const toDoApi = createApi({
     getToDos: builder.query({
       query: () => {
         return {
-          url: `todos?isCompleted=false`,
+          url: `todos`,
           method: "GET",
           headers: {
             Authorization:
@@ -45,6 +45,23 @@ export const toDoApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.status,
       invalidatesTags: [{type: 'Todos', ID: 'List'}],
     }),
+    editToDo: builder.mutation({
+      query: ({id, title}) => {
+        console.log(id, title);
+        return {
+          url: `todos/${id}`,
+          method: "PATCH",
+          headers: {
+            Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZsYWQ4QG1haWwucnUiLCJJRCI6IjYzNDYwYmE2ZjBiNjdjMWMzOGZlZGNlNSIsImlhdCI6MTY2ODMxMzQwMH0.9AAfnpTVdu4sUQjm7RXrqQkf0e_BgyL9iVeCuR6nD1s",
+          },
+          body: {title},
+        };
+      },
+      transformResponse: (response, meta, arg) => response.data,
+      transformErrorResponse: (response, meta, arg) => response.status,
+      invalidatesTags: [{type: 'Todos', ID: 'List'}],
+    }),
     deleteToDo: builder.mutation({
       query: (id) => {
         console.log(id);
@@ -61,6 +78,22 @@ export const toDoApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.status,
       invalidatesTags: [{type: 'Todos', ID: 'List'}],
     }),
+    toggleIsCompleted: builder.mutation({
+      query: (id) => {
+        console.log(id)
+        return {
+          url: `todos/${id}/isCompleted`,
+          method: "PATCH",
+          headers: {
+            Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZsYWQ4QG1haWwucnUiLCJJRCI6IjYzNDYwYmE2ZjBiNjdjMWMzOGZlZGNlNSIsImlhdCI6MTY2ODMxMzQwMH0.9AAfnpTVdu4sUQjm7RXrqQkf0e_BgyL9iVeCuR6nD1s",
+          },
+        };
+      },
+      transformResponse: (response, meta, arg) => response.data,
+      transformErrorResponse: (response, meta, arg) => response.status,
+      invalidatesTags: [{type: 'Todos', ID: 'List'}],
+    }),
   }),
 });
 
@@ -70,4 +103,6 @@ export const {
   useGetToDosQuery,
   useCreateToDoMutation,
   useDeleteToDoMutation,
+  useToggleIsCompletedMutation,
+  useEditToDoMutation
 } = toDoApi;

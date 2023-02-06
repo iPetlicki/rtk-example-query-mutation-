@@ -12,9 +12,14 @@ export const textSlice = createSlice({
       console.log(action);
       state.value = action.payload;
     },
+
+    editText: (state, action) => {
+      state = action.payload
+    },
+
   },
 });
 
-export const { enterText } = textSlice.actions;
+export const { enterText, editText } = textSlice.actions;
 
 export default textSlice.reducer;
