@@ -1,7 +1,5 @@
-// Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// Define a service using a base URL and expected endpoints
 export const toDoApi = createApi({
   reducerPath: "toDoApi",
   tagTypes: ['Todos'],
@@ -18,7 +16,7 @@ export const toDoApi = createApi({
             Authorization:
               "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZsYWQ4QG1haWwucnUiLCJJRCI6IjYzNDYwYmE2ZjBiNjdjMWMzOGZlZGNlNSIsImlhdCI6MTY2ODMxMzQwMH0.9AAfnpTVdu4sUQjm7RXrqQkf0e_BgyL9iVeCuR6nD1s",
           },
-        };
+        }
       },
       providesTags: (result) =>
           result
@@ -30,7 +28,6 @@ export const toDoApi = createApi({
     }),
     createToDo: builder.mutation({
       query: (body) => {
-        console.log(body);
         return {
           url: `todos`,
           method: "POST",
@@ -47,7 +44,6 @@ export const toDoApi = createApi({
     }),
     editToDo: builder.mutation({
       query: ({id, title}) => {
-        console.log(id, title);
         return {
           url: `todos/${id}`,
           method: "PATCH",
@@ -64,7 +60,6 @@ export const toDoApi = createApi({
     }),
     deleteToDo: builder.mutation({
       query: (id) => {
-        console.log(id);
         return {
           url: `todos/${id}`,
           method: "DELETE",
@@ -80,7 +75,6 @@ export const toDoApi = createApi({
     }),
     toggleIsCompleted: builder.mutation({
       query: (id) => {
-        console.log(id)
         return {
           url: `todos/${id}/isCompleted`,
           method: "PATCH",
@@ -95,14 +89,12 @@ export const toDoApi = createApi({
       invalidatesTags: [{type: 'Todos', ID: 'List'}],
     }),
   }),
-});
+})
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const {
   useGetToDosQuery,
   useCreateToDoMutation,
   useDeleteToDoMutation,
   useToggleIsCompletedMutation,
   useEditToDoMutation
-} = toDoApi;
+} = toDoApi
